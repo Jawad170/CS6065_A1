@@ -26,6 +26,7 @@ void setup()
   background  (50)     ;
   
   UserID = Integer.parseInt(showInputDialog("Please enter new ID", "24601"));
+  System.out.println(UserID);
   
   NewTarget   (  )     ;
   
@@ -49,7 +50,6 @@ void setup()
 
 void draw()
 {
-  if ( UserID < 0 )   randomCircles();
   background(50);
   DrawCircle();
   //DrawTrump();
@@ -68,6 +68,11 @@ void mousePressed()
       score++;
       SF_Click.rewind();
       SF_Click.play();
+      if ( score >= 10 )
+      {
+        Continue();
+        score = 0;
+      }
     }
     else
     {
@@ -76,6 +81,15 @@ void mousePressed()
       SF_Hover.play();
     }
   }
+}
+
+private int GameCount = 0;
+void Continue()
+{
+  GameCount++;
+  if ( GameCount < 5) showMessageDialog(null, GameCount + " Game Done, " + (5-GameCount) + " Left.\n\nContinue?", "[ "+ GameCount + " / " + (5) + " ]", INFORMATION_MESSAGE);
+  else showMessageDialog(null, GameCount + " Game Done, Thanks For Playing.", "Game Over", INFORMATION_MESSAGE);
+  
 }
 
 boolean CheckMouseOver()
@@ -164,21 +178,4 @@ void CheckTime()
   fill(220, 50, 50);
   text("GAME OVER", width/2,height/2); 
   }
-}
-
-
-
-
-void randomCircles()
-{
-  float rX = random(0, width);
-  float rY = random(0, height);
-  float rd = random(10,400);
-  
-  float rR = random(0,255);
-  float rG = random(0,255);
-  float rB = random(0,255);
-  
-  fill(rR, rG, rB);
-  ellipse(X,Y,d,d);
 }
