@@ -60,8 +60,7 @@ void setup()
     exit();
   }
     
-  //TODO jwuertz Add a check to make sure that we actually entered a number.
-  String userInput = showInputDialog("Please enter your ID");
+ String userInput = showInputDialog("Please enter your ID");
   try {
     UserID = Integer.parseInt(userInput); 
   } catch( Exception e ) {
