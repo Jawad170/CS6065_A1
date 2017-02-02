@@ -46,7 +46,7 @@ void setup()
     }
   }
   
-  String dataFileName = dataFileBaseName + today + ".csv";
+  String dataFileName = dataFileBaseName + "-" + today + ".csv";
   try {
     System.out.println( "Creating: " + dataFileName );
     System.out.println( "In directory: " + pwd );
