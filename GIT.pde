@@ -1,22 +1,32 @@
-
+import ddf.minim.*;
+import static javax.swing.JOptionPane.*;
 
 float d, X, Y;  //Circle Diameter, X and Y Positions
 float r, g, b;  //Circle Color when not selected
 float R, G, B;  //Circle Color when hovered over
 
-PImage img;
-//SoundFile SF_Hover, SF_Click, SF_Miss;
+PImage img;  //image file for Trump E-Egg
+
+//Sound Effect Variables
+Minim minim;
+AudioSnippet SF_Click, SF_Hover, SF_Miss;
 
 PFont font     ;
 int   score    ;
 int   missclick;
+float startTime;
 float time     ;
+
+int UserID = -1;
 
 void setup()
 {
   
   size        (900,720);
   background  (50)     ;
+  
+  UserID = Integer.parseInt(showInputDialog("Please enter new ID", "24601"));
+  
   NewTarget   (  )     ;
   
   r = 150; g = 150; b = 150;
@@ -27,17 +37,22 @@ void setup()
   
   font = createFont("Calibri",20,true);
   
-  //SF_Hover = new SoundFile(this, "Blip_Select35.wav");
-  //SF_Click = new SoundFile(this, "Pickup_Coin15.wav");
-  //SF_Miss  = new SoundFile(this, "Laser_Shoot3.wav" );
+  startTime = 60;
+  
+  minim = new Minim(this);
+  
+  SF_Hover = minim.loadSnippet("Blip_Select35.wav");
+  SF_Click = minim.loadSnippet("Pickup_Coin15.wav");
+  SF_Miss  = minim.loadSnippet("Laser_Shoot3.wav" );
   
 }
 
 void draw()
 {
+  if ( UserID < 0 )   randomCircles();
   background(50);
-  //DrawCircle();
-  DrawTrump();
+  DrawCircle();
+  //DrawTrump();
   ShowScore() ;
   ShowTimer() ;
   CheckTime() ;
@@ -51,12 +66,14 @@ void mousePressed()
     {
       NewTarget();
       score++;
-      //SF_Click.play();
+      SF_Click.rewind();
+      SF_Click.play();
     }
     else
     {
       missclick++;
-      //SF_Hover.play();
+      SF_Hover.rewind();
+      SF_Hover.play();
     }
   }
 }
@@ -92,7 +109,8 @@ void DrawCircle()
     if ( CheckMouseOver() && !hovering )
     {
       hovering = true;
-      //SF_Miss.play();
+      SF_Miss.rewind();
+      SF_Miss.play();
     }
     else if ( !CheckMouseOver() && hovering )
     {
@@ -130,12 +148,13 @@ void ShowTimer()
 {
   textFont(font, 20);               
   fill(220);
-  text(time, width-100,50); 
+  text(time,   width-100,50); 
+  text("time", width-95 ,30); 
 }
 
 void CheckTime()
 {
-  time = 20.0 - (millis()/1000.0f);
+  time = startTime - (millis()/1000.0f);
   
   if ( time <= 0.0f )
   {
@@ -145,4 +164,21 @@ void CheckTime()
   fill(220, 50, 50);
   text("GAME OVER", width/2,height/2); 
   }
+}
+
+
+
+
+void randomCircles()
+{
+  float rX = random(0, width);
+  float rY = random(0, height);
+  float rd = random(10,400);
+  
+  float rR = random(0,255);
+  float rG = random(0,255);
+  float rB = random(0,255);
+  
+  fill(rR, rG, rB);
+  ellipse(X,Y,d,d);
 }
