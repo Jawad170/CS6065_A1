@@ -1,4 +1,6 @@
 import ddf.minim.*;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import static javax.swing.JOptionPane.*;
 
 float d, X, Y;  //Circle Diameter, X and Y Positions
@@ -6,6 +8,8 @@ float r, g, b;  //Circle Color when not selected
 float R, G, B;  //Circle Color when hovered over
 
 PImage img;  //image file for Trump E-Egg
+
+PrintWriter dataFile;
 
 //Sound Effect Variables
 Minim minim;
@@ -25,7 +29,27 @@ void setup()
   size        (900,720);
   background  (50)     ;
   
-  UserID = Integer.parseInt(showInputDialog("Please enter new ID", "..."));
+  String pwd = sketchPath();
+  String[] files = listFileNames(pwd);
+  String dataFileBaseName = "data";
+  int duplicateDataFileCounter = 0;
+  
+  SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
+  String today = ft.format(new Date());
+  
+  for( String file: files ) {
+    if( file.matches( dataFileBaseName + "-" + today + "(.*)" ) ) {
+          duplicateDataFileCounter++;
+    }
+  }
+  
+  String dataFileName = dataFileBaseName + today + duplicateDataFileCounter + ".csv";
+  
+  dataFile = new PrintWriter(dataFileName);
+  
+  
+  //TODO jwuertz Add a check to make sure that we actually entered a number.
+  UserID = Integer.parseInt(showInputDialog("Please enter new ID", "...")); 
   System.out.println("Game Trial Started For USER ID: " + UserID + " . . . \n\n");
   
   NewTarget   (  )     ;
@@ -187,5 +211,17 @@ void CheckTime()
   textFont(font, 50);               
   fill(220, 50, 50);
   text("GAME OVER", width/2,height/2); 
+  }
+}
+
+// This function returns all the files in a directory as an array of Strings  
+String[] listFileNames(String dir) {
+  File file = new File(dir);
+  if (file.isDirectory()) {
+    String names[] = file.list();
+    return names;
+  } else {
+    // If it's not a directory
+    return null;
   }
 }
