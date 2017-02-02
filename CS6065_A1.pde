@@ -35,24 +35,26 @@ void setup()
   String pwd = sketchPath();
   String[] files = listFileNames(pwd);
   String dataFileBaseName = "data";
-  int duplicateDataFileCounter = 0;
+  boolean appendDataFile = false;
   
   SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
   String today = ft.format(new Date());
   
   for( String file: files ) {
     if( file.matches( dataFileBaseName + "-" + today + "(.*)" ) ) {
-          duplicateDataFileCounter++;
+          appendDataFile = true;
     }
   }
   
-  String dataFileName = dataFileBaseName + today + duplicateDataFileCounter + ".csv";
+  String dataFileName = dataFileBaseName + today + ".csv";
   try {
     System.out.println( "Creating: " + dataFileName );
     System.out.println( "In directory: " + pwd );
-    dataFile = new BufferedWriter( new FileWriter( dataFileName ) );
-    dataFile.write("user, block, trial, targetRadius, targetDistance, elapsedTime, numberOfErrors");
-    dataFile.flush();
+    dataFile = new BufferedWriter( new FileWriter( dataFileName, appendDataFile ) );
+    if( !appendDataFile ) {
+      dataFile.write("user, block, trial, targetRadius, targetDistance, elapsedTime, numberOfErrors");
+      dataFile.flush();
+    }
   } catch( Exception e ){
     System.out.println( e );
     exit();
