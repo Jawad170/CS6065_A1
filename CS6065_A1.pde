@@ -82,18 +82,20 @@ void draw()
   CheckTime() ;
 }
 
+private float LastTime = 0;
 void mousePressed()
 {
   if ( time > 0.0f)
   {
     if ( CheckMouseOver() ) 
     {
+      System.out.println(UserID+ "\t" + (GameCount+1) + "\t" + ++score + "\t"+ GetDistance() +"\t" + ((millis()/1000.0f)-LastTime) );
+      LastTime = (millis()/1000.0f);
+      
       NewTarget();
-      score++;
       SF_Click.rewind();
       SF_Click.play();
       
-      System.out.println(UserID+ "\t" + (GameCount+1) + "\t" + score + "\t DISTANCE? \t" + (millis()/1000.0f) );
       if ( score >= 10 )
       {
         score = 0;
@@ -224,4 +226,27 @@ String[] listFileNames(String dir) {
     // If it's not a directory
     return null;
   }
+}
+
+private float LastY = -1;
+private float LastX = -1;
+float GetDistance()
+{
+  if ( LastX == -1 ) 
+  {
+    LastY = Y;
+    LastX = X;
+    return 0;
+  }
+  
+  //System.out.println(X + " " + Y + " - " + LastX + " " + LastY );
+  float D = 0;
+  double distance = Math.hypot(X - LastX, Y - LastY);
+  D = (float) distance;
+  //System.out.println("Distance: " + distance + "  -  D: " + D );
+  
+  LastY = Y;
+  LastX = X;
+  
+  return D;
 }
