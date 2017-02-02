@@ -26,7 +26,7 @@ void setup()
   background  (50)     ;
   
   UserID = Integer.parseInt(showInputDialog("Please enter new ID", "24601"));
-  System.out.println(UserID);
+  System.out.println("Game Trial Started For USER ID: " + UserID + " . . . \n\n");
   
   NewTarget   (  )     ;
   
@@ -68,6 +68,8 @@ void mousePressed()
       score++;
       SF_Click.rewind();
       SF_Click.play();
+      
+      System.out.println(UserID+ "\t" + (GameCount+1) + "\t" + score + "\t DISTANCE? \t" + (millis()/1000.0f) );
       if ( score >= 10 )
       {
         score = 0;
@@ -89,8 +91,14 @@ private int GameCount = 0;
 void Continue()
 {
   GameCount++;
-  if ( GameCount < TotalGames) showMessageDialog(null, GameCount + " Game(s) Done, " + (TotalGames-GameCount) + " Left.\n\nContinue?", "[ "+ GameCount + " / " + (TotalGames) + " ]", INFORMATION_MESSAGE);
-  else {showMessageDialog(null, GameCount + " Game Done, Thanks For Playing.", "Game Over", INFORMATION_MESSAGE); startTime = 0;}
+  if ( GameCount < TotalGames) 
+  {
+    showMessageDialog(null, GameCount + " Game(s) Done, " + (TotalGames-GameCount) + " Left.\n\nContinue?", "[ "+ GameCount + " / " + (TotalGames) + " ]", INFORMATION_MESSAGE);
+  }
+  else 
+  {
+    showMessageDialog(null, GameCount + " Game Done, Thanks For Playing.", "Game Over", INFORMATION_MESSAGE); startTime = 0;
+  }
   
 }
 
