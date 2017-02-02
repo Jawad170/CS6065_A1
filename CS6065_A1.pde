@@ -45,9 +45,16 @@ void setup()
   }
   
   String dataFileName = dataFileBaseName + today + duplicateDataFileCounter + ".csv";
+  try {
+    System.out.println( "Creating: " + dataFileName );
+    System.out.println( "In directory: " + pwd );
+    dataFile = createWriter(dataFileName);
+  } catch( Exception e ){
+    System.out.println( e );
+  }
   
-  dataFile = new PrintWriter(dataFileName);
-  
+  dataFile.println("user, block, trial, targetRadius, targetDistance, elapsedTime, numberOfErrors");
+  dataFile.flush();
   
   //TODO jwuertz Add a check to make sure that we actually entered a number.
   UserID = Integer.parseInt(showInputDialog("Please enter new ID", "...")); 
@@ -219,6 +226,7 @@ void CheckTime()
   textFont(font, 50);               
   fill(220, 50, 50);
   text("GAME OVER", width/2,height/2); 
+  dataFile.close();
   }
 }
 
