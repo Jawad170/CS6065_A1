@@ -25,7 +25,7 @@ void setup()
   size        (900,720);
   background  (50)     ;
   
-  UserID = Integer.parseInt(showInputDialog("Please enter new ID", "24601"));
+  UserID = Integer.parseInt(showInputDialog("Please enter new ID", "..."));
   System.out.println("Game Trial Started For USER ID: " + UserID + " . . . \n\n");
   
   NewTarget   (  )     ;
