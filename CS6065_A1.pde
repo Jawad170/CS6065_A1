@@ -58,15 +58,6 @@ void setup()
   } catch( Exception e ){
     System.out.println( e );
     exit();
-  } finally {
-    if( dataFile != null ) {
-      try {
-        dataFile.close();
-      } catch( IOException e ) {
-        println( e );
-        exit();
-      }
-    }
   }
     
   //TODO jwuertz Add a check to make sure that we actually entered a number.
@@ -121,6 +112,22 @@ void mousePressed()
       String T = String.format("%.02f", ((millis()/1000.0f)-LastTime));
       String D = String.format("%.02f", (GetDistance()));
       System.out.println(UserID+ "\t" + (GameCount+1) + "\t" + ++score + "\t"+ D +"\t" + T + "\t" + LastMissC );
+      if( dataFile != null ) {
+        try { 
+          dataFile.write( 
+                  UserID + ", " + 
+                  (GameCount + 1) + ", " + 
+                  score + ", " + 
+                  D + ", " + 
+                  T + ", " + 
+                  LastMissC 
+          );
+          dataFile.flush();
+        } catch( IOException e ) {
+          e.printStackTrace();
+          exit();
+        }
+      }
       LastTime = (millis()/1000.0f);
       LastMissC = 0;
       
