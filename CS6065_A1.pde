@@ -51,13 +51,21 @@ void setup()
     dataFile = createWriter(dataFileName);
   } catch( Exception e ){
     System.out.println( e );
+    exit();
   }
   
   dataFile.println("user, block, trial, targetRadius, targetDistance, elapsedTime, numberOfErrors");
   dataFile.flush();
   
   //TODO jwuertz Add a check to make sure that we actually entered a number.
-  UserID = Integer.parseInt(showInputDialog("Please enter new ID", "...")); 
+  String userInput = showInputDialog("Please enter your ID");
+  try {
+    UserID = Integer.parseInt(userInput); 
+  } catch( Exception e ) {
+    System.out.println(e);
+    exit();
+  }
+  
   System.out.println("Game Trial Started For USER ID: " + UserID + " . . . \n\n");
   
   NewTarget   (  )     ;
