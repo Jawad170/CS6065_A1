@@ -18,6 +18,7 @@ AudioSnippet SF_Click, SF_Hover, SF_Miss;
 PFont font     ;
 int   score    ;
 int   missclick;
+int   LastMissC;
 float startTime;
 float time     ;
 
@@ -59,6 +60,7 @@ void setup()
   
   score     = 0;
   missclick = 0;
+  LastMissC = 0;
   
   font = createFont("Calibri",20,true);
   
@@ -89,8 +91,11 @@ void mousePressed()
   {
     if ( CheckMouseOver() ) 
     {
-      System.out.println(UserID+ "\t" + (GameCount+1) + "\t" + ++score + "\t"+ GetDistance() +"\t" + ((millis()/1000.0f)-LastTime) );
+      String T = String.format("%.02f", ((millis()/1000.0f)-LastTime));
+      String D = String.format("%.02f", (GetDistance()));
+      System.out.println(UserID+ "\t" + (GameCount+1) + "\t" + ++score + "\t"+ D +"\t" + T + "\t" + LastMissC );
       LastTime = (millis()/1000.0f);
+      LastMissC = 0;
       
       NewTarget();
       SF_Click.rewind();
@@ -106,6 +111,7 @@ void mousePressed()
     else
     {
       missclick++;
+      LastMissC++;
       SF_Hover.rewind();
       SF_Hover.play();
     }
@@ -239,11 +245,9 @@ float GetDistance()
     return 0;
   }
   
-  //System.out.println(X + " " + Y + " - " + LastX + " " + LastY );
   float D = 0;
   double distance = Math.hypot(X - LastX, Y - LastY);
   D = (float) distance;
-  //System.out.println("Distance: " + distance + "  -  D: " + D );
   
   LastY = Y;
   LastX = X;
