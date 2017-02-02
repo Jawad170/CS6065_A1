@@ -1,4 +1,6 @@
 import ddf.minim.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import static javax.swing.JOptionPane.*;
@@ -9,7 +11,7 @@ float R, G, B;  //Circle Color when hovered over
 
 PImage img;  //image file for Trump E-Egg
 
-PrintWriter dataFile;
+BufferedWriter dataFile = null;
 
 //Sound Effect Variables
 Minim minim;
@@ -48,15 +50,23 @@ void setup()
   try {
     System.out.println( "Creating: " + dataFileName );
     System.out.println( "In directory: " + pwd );
-    dataFile = createWriter(dataFileName);
+    dataFile = new BufferedWriter( new FileWriter( dataFileName ) );
+    dataFile.write("user, block, trial, targetRadius, targetDistance, elapsedTime, numberOfErrors");
+    dataFile.flush();
   } catch( Exception e ){
     System.out.println( e );
     exit();
+  } finally {
+    if( dataFile != null ) {
+      try {
+        dataFile.close();
+      } catch( IOException e ) {
+        println( e );
+        exit();
+      }
+    }
   }
-  
-  dataFile.println("user, block, trial, targetRadius, targetDistance, elapsedTime, numberOfErrors");
-  dataFile.flush();
-  
+    
   //TODO jwuertz Add a check to make sure that we actually entered a number.
   String userInput = showInputDialog("Please enter your ID");
   try {
@@ -227,14 +237,20 @@ void CheckTime()
 {
   time = startTime - (millis()/1000.0f);
   
-  if ( time <= 0.0f )
-  {
+  if ( time <= 0.0f ) {
     time = 0;
     
-  textFont(font, 50);               
-  fill(220, 50, 50);
-  text("GAME OVER", width/2,height/2); 
-  dataFile.close();
+    textFont(font, 50);               
+    fill(220, 50, 50);
+    text("GAME OVER", width/2,height/2); 
+    if( dataFile != null ) {
+      try { 
+        dataFile.close();
+      } catch( IOException e ) {
+        println( e );
+        exit();
+      }
+    }
   }
 }
 
