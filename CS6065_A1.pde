@@ -32,6 +32,7 @@ void setup()
   size        (900,720);
   background  (50)     ;
   
+  
   String pwd = sketchPath();
   String[] files = listFileNames(pwd);
   String dataFileBaseName = "data";
@@ -198,7 +199,7 @@ void NewTarget()
   
   //X and Y values within the screen + offset for the size of the circle
   X = random((d/2) , width  - (d/2));
-  Y = random((d/2) , height - (d/2));
+  Y = random((d/2)+80 , height - (d/2));
 }
 
 
