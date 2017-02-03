@@ -32,7 +32,6 @@ void setup()
   size        (900,720);
   background  (50)     ;
   
-  
   String pwd = sketchPath();
   String[] files = listFileNames(pwd);
   String dataFileBaseName = "data";
@@ -44,7 +43,7 @@ void setup()
   String dataFileName = dataFileBaseName + "-" + today + ".csv";
   File f = new File( dataPath( dataFileName ) );
     
-  if( !f.exists() ) {   //<>// //<>//
+  if( !f.exists() ) {   //<>// //<>// //<>//
     append = false;
     try {
       System.out.println( "Creating: " + dataFileName );
@@ -87,7 +86,7 @@ void setup()
   r = 150; g = 150; b = 150;
   R = 100; G = 200; B = 100;
   
-  score     = 0;
+  score     = -1;
   missclick = 0;
   LastMissC = 0;
   
@@ -116,30 +115,33 @@ void draw()
 private float LastTime = 0;
 void mousePressed()
 {
-  if ( time > 0.0f)
+  if ( time > 0.0f )
   {
     if ( CheckMouseOver() ) 
     {
       String T = String.format("%.02f", ((millis()/1000.0f)-LastTime));
       String D = String.format("%.02f", (GetDistance()));
-      System.out.println(UserID+ "\t" + (GameCount+1) + "\t" + ++score + "\t"+ D +"\t" + T + "\t" + LastMissC );
-      if( dataFile != null ) {
-        try { 
-          dataFile.println( 
-                  UserID + ", " + 
-                  (GameCount + 1) + ", " + 
-                  score + ", " + 
-                  T + ", " + 
-                  D + ", " + 
-                  time + ", " + 
-                  LastMissC 
-          );
-          dataFile.flush();
-        } catch( Exception e ) {
-          e.printStackTrace();
-          exit();
+      if( ++score > 0 ) {
+        System.out.println(UserID+ "\t" + GameCount + "\t" + score + "\t"+ D +"\t" + T + "\t" + LastMissC );
+        if( dataFile != null ) {
+          try { 
+            dataFile.println( 
+                    UserID + ", " + 
+                    GameCount + ", " + 
+                    score + ", " + 
+                    T + ", " + 
+                    D + ", " + 
+                    time + ", " + 
+                    LastMissC 
+            );
+            dataFile.flush();
+          } catch( Exception e ) {
+            e.printStackTrace();
+            exit();
+          }
         }
       }
+      
       LastTime = (millis()/1000.0f);
       LastMissC = 0;
       
@@ -149,7 +151,7 @@ void mousePressed()
       
       if ( score >= 10 )
       {
-        score = 0;
+        score = -1;
         startTime+=60;
         Continue();
       }
