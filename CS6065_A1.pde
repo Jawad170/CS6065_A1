@@ -166,7 +166,7 @@ void mousePressed()
   }
 }
 
-private int TotalGames = 2;
+private int TotalGames = 10;
 private int GameCount = 0;
 void Continue()
 {
