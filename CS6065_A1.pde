@@ -125,8 +125,9 @@ void mousePressed()
                   UserID + ", " + 
                   (GameCount + 1) + ", " + 
                   score + ", " + 
-                  D + ", " + 
                   T + ", " + 
+                  D + ", " + 
+                  time + ", " + 
                   LastMissC 
           );
           dataFile.flush();
