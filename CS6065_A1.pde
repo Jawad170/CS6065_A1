@@ -11,7 +11,7 @@ float R, G, B;  //Circle Color when hovered over
 
 PImage img;  //image file for Trump E-Egg
 
-BufferedWriter dataFile = null;
+PrintWriter dataFile = null;
 
 //Sound Effect Variables
 Minim minim;
@@ -35,29 +35,37 @@ void setup()
   String pwd = sketchPath();
   String[] files = listFileNames(pwd);
   String dataFileBaseName = "data";
-  boolean appendDataFile = false;
+  boolean append = true;
   
   SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
   String today = ft.format(new Date());
   
-  for( String file: files ) {
-    if( file.matches( dataFileBaseName + "-" + today + "(.*)" ) ) {
-          appendDataFile = true;
-    }
-  }
-  
   String dataFileName = dataFileBaseName + "-" + today + ".csv";
-  try {
-    System.out.println( "Creating: " + dataFileName );
-    System.out.println( "In directory: " + pwd );
-    dataFile = new BufferedWriter( new FileWriter( dataFileName, appendDataFile ) );
-    if( !appendDataFile ) {
-      dataFile.write("user, block, trial, targetRadius, targetDistance, elapsedTime, numberOfErrors");
-      dataFile.flush();
+  File f = new File( dataPath( dataFileName ) );
+    
+  if( !f.exists() ) {   //<>// //<>//
+    append = false;
+    try {
+      System.out.println( "Creating: " + dataFileName );
+      System.out.println( "In directory: " + pwd );
+      f.createNewFile();
+    } catch( Exception e ) {
+      e.printStackTrace();
+      exit();
     }
-  } catch( Exception e ){
-    System.out.println( e );
-    exit();
+    
+    try {
+      dataFile = new PrintWriter( 
+                    new BufferedWriter( 
+                        new FileWriter( f, append ) ) );                    
+      if( !append ) {
+        dataFile.println("user, block, trial, targetRadius, targetDistance, elapsedTime, numberOfErrors");
+        dataFile.flush();
+      }
+    } catch( Exception e ){
+      e.printStackTrace();
+      exit();
+    }
   }
     
  String userInput = showInputDialog("Please enter your ID");
@@ -113,7 +121,7 @@ void mousePressed()
       System.out.println(UserID+ "\t" + (GameCount+1) + "\t" + ++score + "\t"+ D +"\t" + T + "\t" + LastMissC );
       if( dataFile != null ) {
         try { 
-          dataFile.write( 
+          dataFile.println( 
                   UserID + ", " + 
                   (GameCount + 1) + ", " + 
                   score + ", " + 
@@ -122,7 +130,7 @@ void mousePressed()
                   LastMissC 
           );
           dataFile.flush();
-        } catch( IOException e ) {
+        } catch( Exception e ) {
           e.printStackTrace();
           exit();
         }
@@ -254,7 +262,7 @@ void CheckTime()
     if( dataFile != null ) {
       try { 
         dataFile.close();
-      } catch( IOException e ) {
+      } catch( Exception e ) {
         println( e );
         exit();
       }
