@@ -53,19 +53,22 @@ void setup()
       e.printStackTrace();
       exit();
     }
+  }
     
-    try {
-      dataFile = new PrintWriter( 
-                    new BufferedWriter( 
-                        new FileWriter( f, append ) ) );                    
-      if( !append ) {
-        dataFile.println("user, block, trial, targetRadius, targetDistance, elapsedTime, numberOfErrors");
-        dataFile.flush();
-      }
-    } catch( Exception e ){
-      e.printStackTrace();
-      exit();
+  try {
+    dataFile = new PrintWriter( 
+                  new BufferedWriter( 
+                      new FileWriter( f, append ) ) );                    
+    if( !append ) {
+      dataFile.println("user, block, trial, targetRadius, targetDistance, elapsedTime, numberOfErrors");
+      dataFile.flush();
+    } else {
+      println( "File exists in " + pwd );
+      println( "Attempting to append." );
     }
+  } catch( Exception e ){
+    e.printStackTrace();
+    exit();
   }
     
  String userInput = showInputDialog("Please enter your ID");
