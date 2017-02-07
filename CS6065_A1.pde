@@ -9,8 +9,6 @@ float d, X, Y;  //Circle Diameter, X and Y Positions
 float r, g, b;  //Circle Color when not selected
 float R, G, B;  //Circle Color when hovered over
 
-PImage img;  //image file for Trump E-Egg
-
 PrintWriter dataFile = null;
 
 //Sound Effect Variables
@@ -81,14 +79,14 @@ void setup()
   
   System.out.println("Game Trial Started For USER ID: " + UserID + " . . . \n\n");
   
-  NewTarget   (  )     ;
+  NewTarget();
   
   r = 150; g = 150; b = 150;
   R = 100; G = 200; B = 100;
   
   score     = -1;
-  missclick = 0;
-  LastMissC = 0;
+  missclick =  0;
+  LastMissC =  0;
   
   font = createFont("Calibri",20,true);
   
@@ -105,11 +103,10 @@ void setup()
 void draw()
 {
   background(50);
-  DrawCircle();
-  //DrawTrump();
-  ShowScore() ;
-  ShowTimer() ;
-  CheckTime() ;
+  DrawCircle(  );
+  ShowScore (  );
+  ShowTimer (  );
+  CheckTime (  );
 }
 
 private float LastTime = 0;
@@ -222,16 +219,6 @@ void DrawCircle()
     }
     if ( CheckMouseOver() ) fill(R, G, B); else fill(r, g, b);
     ellipse(X,Y,d,d);
-  }
-}
-
-void DrawTrump()
-{
-  if ( time > 0.0f)
-  {
-    if ( CheckMouseOver() ) img = loadImage("competitor-head-trump.png"); else img = loadImage("unnamed.png");;
-  
-    image(img, X-(d/2),Y-(d/2),d,d);
   }
 }
 
